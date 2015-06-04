@@ -14,7 +14,7 @@ class Fighter(models.Model):
 
 
 class PracticeSession(models.Model):
-	description = models.CharField(max_length=200, allow_blank=True)
+	description = models.CharField(max_length=200, blank=True)
 	date = models.DateField()
 	full_attendance = models.ManyToManyField(Fighter, related_name='full_attendance')
 	half_attendance = models.ManyToManyField(Fighter, related_name='half_attendance')
