@@ -22,7 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
 		fields = ('id', 'username', 'email', 'fighter',)
 
 class FighterSerializer(serializers.ModelSerializer):
-	user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required = False)
+	user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), allow_null=True, required = False)
 	#user = UserMin(allow_null=True, required = False)
 	class Meta:
 		model = Fighter
