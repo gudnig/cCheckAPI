@@ -56,7 +56,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 CORS_ORIGIN_WHITELIST = [
-    'localhost:9000', 'cCheckAPI.herokuapp.com'    
+    'localhost:9000', 'ccheck.herokuapp.com'    
 ]
 
 ROOT_URLCONF = 'cCheckAPI.urls'
@@ -87,7 +87,7 @@ import dj_database_url
 DATABASES = {}
 DATABASES['default'] =  dj_database_url.config()
 
-
+print(DATABASES)
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
