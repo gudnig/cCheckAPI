@@ -29,17 +29,15 @@ class FighterSerializer(serializers.ModelSerializer):
 		fields = ( 'id', 'name', 'status', 'created', 'user',  )
 
 class PracticeSessionSerializer(serializers.ModelSerializer):
-	half_attendance = serializers.SlugRelatedField(
+	half_attendance = serializers.PrimaryKeyRelatedField(
 												many=True, 
 												queryset=Fighter.objects.all(), 
-												allow_null=True, 
-												slug_field='id'
+												allow_null=True
 	)
-	full_attendance = serializers.SlugRelatedField(
+	full_attendance = serializers.PrimaryKeyRelatedField(
 												many=True, 
 												queryset=Fighter.objects.all(), 
-												allow_null=True, 
-												slug_field='id'											
+												allow_null=True																				
 	)
 
 	class Meta:

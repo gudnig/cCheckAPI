@@ -67,6 +67,33 @@ class SessionList(generics.ListCreateAPIView):
 	queryset = PracticeSession.objects.all()
 	serializer_class = PracticeSessionSerializer
 
+	def post(self, request):
+		#overwritten so post requests update practice session if it exists on a particular date
+		serializer = PracticeSessionSerializer(data=request.data)
+		if(serializer.is_valid()):
+			#Check if date already exists	
+			session_set = PracticeSession.objects.filter(date=serializer.validated_data.get('date'))
+			if(session_set.count() > 0):
+				session = session_set[0]				
+				
+				# add half attendance
+				half_attendees = serializer.validated_data.get('half_attendance')
+				session.half_attendance.add(*half_attendees)
+
+				# add full attendance
+				full_attendees = serializer.validated_data.get('full_attendance')
+				session.full_attendance.add(*full_attendees)
+				
+				#make sure no-one is both in full and half attendance
+				full = session.full_attendance.all()
+				session.half_attendance.remove(*full)				
+
+				return Response(PracticeSessionSerializer(session).data)
+			else:
+				serializer.save()
+				return Response(serializer.data)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class SessionDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = (permissions.IsAuthenticated, IsTrainer,)
 	queryset = PracticeSession.objects.all()
