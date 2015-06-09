@@ -14,8 +14,7 @@ class UserMin(serializers.ModelSerializer):
 		fields = ('username', 'email')
 
 class UserSerializer(serializers.ModelSerializer):
-	#fighter = serializers.PrimaryKeyRelatedField(queryset=Fighter.objects.all())
-	fighter = FighterMin()
+	fighter = serializers.PrimaryKeyRelatedField(queryset=Fighter.objects.all())	
 
 	class Meta:
 		model = User
@@ -27,6 +26,7 @@ class FighterSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Fighter
 		fields = ( 'id', 'name', 'status', 'created', 'user',  )
+
 
 class PracticeSessionSerializer(serializers.ModelSerializer):
 	half_attendance = serializers.PrimaryKeyRelatedField(
