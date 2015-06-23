@@ -51,7 +51,7 @@ class FighterDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Fighter.objects.all()
 	serializer_class = FighterSerializer
 
-class UserList(generics.ListAPIView):
+class UserList(generics.ListCreateAPIView):
 	permission_classes = (permissions.IsAuthenticated, IsTrainer,)
 	queryset = User.objects.all()
 	serializer_class = UserSerializer

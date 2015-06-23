@@ -11,11 +11,15 @@ class Fighter(models.Model):
 	status = models.CharField(max_length=20)
 	created = models.DateTimeField(auto_now_add=True)
 	user = models.OneToOneField('auth.User', null=True)
+	is_trainer = models.BooleanField(default=False)
+	can_post_notifications = models.BooleanField(default=False)
+	is_admin = models.BooleanField(default=False)
 
 
 class PracticeSession(models.Model):
 	description = models.CharField(max_length=200, blank=True)
 	date = models.DateField()
+	session_type = models.CharField(max_length=20)
 	full_attendance = models.ManyToManyField(Fighter, related_name='full_attendance')
 	half_attendance = models.ManyToManyField(Fighter, related_name='half_attendance')
 

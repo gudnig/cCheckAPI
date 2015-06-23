@@ -42,5 +42,5 @@ class PracticeSessionSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = PracticeSession
-		fields = ('id', 'date', 'description', 'half_attendance', 'full_attendance',)		
+		fields = ('id', 'date', 'session_type', 'description', 'half_attendance', 'full_attendance',)		
 
