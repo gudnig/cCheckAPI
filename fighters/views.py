@@ -23,9 +23,17 @@ class ObtainAuthToken(APIView):
 		serializer = self.serializer_class(data=request.data)
 		serializer.is_valid(raise_exception=True)
 		user = serializer.validated_data['user']
-		token, created = Token.objects.get_or_create(user=user)
-		try:
-			return Response({'token': token.key, 'name': user.fighter.name, 'status': user.fighter.status})
+		token, created = Token.objects.get_or_create(user=user)		
+		try:			 
+			permissions = []
+			if(user.fighter.is_trainer):
+				permissions.append('trainer')
+			if(user.fighter.is_admin):
+				permissions.append('admin')
+			if(user.fighter.can_post_notifications):
+				permissions.append('poster')
+			print(permissions)
+			return Response({'token': token.key, 'name': user.fighter.name, 'status': user.fighter.status, 'permissions': permissions})
 		except ObjectDoesNotExist:
 			return Response({'token': token.key })
 

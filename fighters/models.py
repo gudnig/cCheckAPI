@@ -16,6 +16,7 @@ class Fighter(models.Model):
 	is_admin = models.BooleanField(default=False)
 
 
+
 class PracticeSession(models.Model):
 	description = models.CharField(max_length=200, blank=True)
 	date = models.DateField()

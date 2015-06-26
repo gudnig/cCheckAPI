@@ -14,18 +14,15 @@ class UserMin(serializers.ModelSerializer):
 		fields = ('username', 'email')
 
 class UserSerializer(serializers.ModelSerializer):
-	fighter = serializers.PrimaryKeyRelatedField(queryset=Fighter.objects.all())	
-
 	class Meta:
 		model = User
-		fields = ('id', 'username', 'email', 'fighter',)
+		fields = ('id', 'username', 'email',)
 
 class FighterSerializer(serializers.ModelSerializer):
-	user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), allow_null=True, required = False)
-	#user = UserMin(allow_null=True, required = False)
+	user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), allow_null=True, required = False)	
 	class Meta:
 		model = Fighter
-		fields = ( 'id', 'name', 'status', 'created', 'user',  )
+		fields = ( 'id', 'name', 'status', 'created', 'user', 'is_trainer', 'is_admin', 'can_post_notifications', )
 
 
 class PracticeSessionSerializer(serializers.ModelSerializer):
