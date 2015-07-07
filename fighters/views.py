@@ -7,7 +7,7 @@ from rest_framework.response import Response
 # models and serialization
 from fighters.models import Fighter, PracticeSession
 from django.contrib.auth.models import User
-from fighters.serializers import FighterSerializer, PracticeSessionSerializer, UserSerializer
+from fighters.serializers import FighterSerializer, PracticeSessionSerializer, UserSerializer, RegisterUserSerializer
 from django.db.models.base import ObjectDoesNotExist 
 
 #authentication
@@ -33,7 +33,7 @@ class ObtainAuthToken(APIView):
 			if(user.fighter.can_post_notifications):
 				permissions.append('poster')
 			print(permissions)
-			return Response({'token': token.key, 'name': user.fighter.name, 'status': user.fighter.status, 'permissions': permissions})
+			return Response({'token': token.key, 'name': user.fighter.name, 'permissions': permissions})
 		except ObjectDoesNotExist:
 			return Response({'token': token.key })
 
@@ -63,6 +63,13 @@ class UserList(generics.ListCreateAPIView):
 	permission_classes = (permissions.IsAuthenticated, IsTrainer,)
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
+
+	def post(self, request):
+		serializer = RegisterUserSerializer(data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)    
+		return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -105,4 +112,4 @@ class SessionList(generics.ListCreateAPIView):
 class SessionDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = (permissions.IsAuthenticated, IsTrainer,)
 	queryset = PracticeSession.objects.all()
-	serializer_class = PracticeSessionSerializer
+	serializer_class = PracticeSessionSerializer    

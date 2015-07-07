@@ -7,10 +7,12 @@ from rest_framework.authtoken.models import Token
 
 # Create your models here.
 class Fighter(models.Model):
-	name = models.CharField(max_length=100)
-	status = models.CharField(max_length=20)
+	name = models.CharField(max_length=100)	
 	created = models.DateTimeField(auto_now_add=True)
 	user = models.OneToOneField('auth.User', null=True)
+	is_newbie = models.BooleanField(default=True)
+	is_fighter = models.BooleanField(default=False)
+	is_archer = models.BooleanField(default=False)
 	is_trainer = models.BooleanField(default=False)
 	can_post_notifications = models.BooleanField(default=False)
 	is_admin = models.BooleanField(default=False)

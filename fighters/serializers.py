@@ -13,16 +13,29 @@ class UserMin(serializers.ModelSerializer):
 		model = User
 		fields = ('username', 'email')
 
+
+class RegisterUserSerializer(serializers.ModelSerializer):
+	def create(self, validated_data):
+		user = User(email=validated_data['email'], username=validated_data['username'])
+		user.set_password(validated_data['password'])
+		user.save()
+		return user
+
+	class Meta:
+		model = User
+		fields = ('id', 'username', 'email', 'password',)
+
 class UserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = User
 		fields = ('id', 'username', 'email',)
 
 class FighterSerializer(serializers.ModelSerializer):
-	user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), allow_null=True, required = False)	
+	user = UserSerializer(required=False, allow_null=True)
+	user_id = serializers.PrimaryKeyRelatedField(allow_null=True, required = False, read_only=True)	
 	class Meta:
 		model = Fighter
-		fields = ( 'id', 'name', 'status', 'created', 'user', 'is_trainer', 'is_admin', 'can_post_notifications', )
+		#fields = ( 'id', 'name', 'created', 'user_id', 'user', 'is_trainer', 'is_admin', 'can_post_notifications', )
 
 
 class PracticeSessionSerializer(serializers.ModelSerializer):

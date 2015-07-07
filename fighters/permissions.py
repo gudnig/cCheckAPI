@@ -19,7 +19,7 @@ class IsTrainerOrReadOnly(permissions.BasePermission):
 
 class IsTrainer(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        return true
+        return request.user.fighter.is_trainer
 
 class IsAdmin(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
