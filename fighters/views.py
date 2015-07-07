@@ -78,16 +78,26 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 	serializer_class = UserSerializer
 
 class SessionList(generics.ListCreateAPIView):
-	permission_classes = (permissions.IsAuthenticated, IsTrainer,)
-	queryset = PracticeSession.objects.all()
+	permission_classes = (permissions.IsAuthenticated, IsTrainer,)	
 	serializer_class = PracticeSessionSerializer
+
+	def get_queryset(self):		
+		
+		queryset = PracticeSession.objects.all()
+		session_type = self.request.query_params.get('type', None)
+		if session_type is None:
+			return Response("Check arguments", status=status.HTTP_400_BAD_REQUEST)	
+		else:
+			print(session_type)
+			queryset = queryset.filter(session_type=session_type)
+		return queryset
 
 	def post(self, request):
 		#overwritten so post requests update practice session if it exists on a particular date
 		serializer = PracticeSessionSerializer(data=request.data)
 		if(serializer.is_valid()):
-			#Check if date already exists	
-			session_set = PracticeSession.objects.filter(date=serializer.validated_data.get('date'))
+			#Check if session of the correct session type exists on this date
+			session_set = PracticeSession.objects.filter(date=serializer.validated_data.get('date'), session_type=serializer.validated_data.get('session_type'))
 			if(session_set.count() > 0):
 				session = session_set[0]				
 				

@@ -31,7 +31,7 @@ class UserSerializer(serializers.ModelSerializer):
 		fields = ('id', 'username', 'email',)
 
 class FighterSerializer(serializers.ModelSerializer):
-	user = UserSerializer(required=False, allow_null=True)
+	user = UserSerializer(required=False, allow_null=True, read_only=True)
 	user_id = serializers.PrimaryKeyRelatedField(allow_null=True, required = False, read_only=True)	
 	class Meta:
 		model = Fighter
