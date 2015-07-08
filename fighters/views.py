@@ -73,7 +73,7 @@ class UserList(generics.ListCreateAPIView):
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-	permission_classes = (permissions.IsAuthenticated, IsTrainer,)
+	permission_classes = (permissions.IsAuthenticated, IsTrainerOrOwner,)
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
 
@@ -83,13 +83,11 @@ class SessionList(generics.ListCreateAPIView):
 
 	def get_queryset(self):		
 		
+		
+		#session_type = self.request.query_params.get('type', None)
 		queryset = PracticeSession.objects.all()
-		session_type = self.request.query_params.get('type', None)
-		if session_type is None:
-			return Response("Check arguments", status=status.HTTP_400_BAD_REQUEST)	
-		else:
-			print(session_type)
-			queryset = queryset.filter(session_type=session_type)
+		#if session_type is None:
+		#	return Response("Check arguments", status=status.HTTP_400_BAD_REQUEST)	
 		return queryset
 
 	def post(self, request):
