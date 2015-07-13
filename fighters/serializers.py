@@ -32,7 +32,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class FighterSerializer(serializers.ModelSerializer):
 	user = UserSerializer(required=False, allow_null=True, read_only=True)
-	user_id = serializers.PrimaryKeyRelatedField(allow_null=True, required = False, read_only=True)	
+	user_id = serializers.PrimaryKeyRelatedField(allow_null=True, required = False)	
 	class Meta:
 		model = Fighter
 		#fields = ( 'id', 'name', 'created', 'user_id', 'user', 'is_trainer', 'is_admin', 'can_post_notifications', )
