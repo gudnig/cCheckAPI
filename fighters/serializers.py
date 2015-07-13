@@ -31,11 +31,11 @@ class UserSerializer(serializers.ModelSerializer):
 		fields = ('id', 'username', 'email',)
 
 class FighterSerializer(serializers.ModelSerializer):
-	user = UserSerializer(required=False, allow_null=True, read_only=True)
-	user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), allow_null=True, required = False)	
+	userinfo = UserSerializer(required=False, allow_null=True, read_only=True)
+	user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), allow_null=True, required = False)	
 	class Meta:
 		model = Fighter
-		#fields = ( 'id', 'name', 'created', 'user_id', 'user', 'is_trainer', 'is_admin', 'can_post_notifications', )
+		#fields = ( 'id', 'name', 'user', 'is_trainer', 'is_admin','is_fighter','is_archer','is_newbie', 'can_post_notifications', )
 
 
 class PracticeSessionSerializer(serializers.ModelSerializer):

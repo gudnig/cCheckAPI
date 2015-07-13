@@ -69,7 +69,7 @@ class UserList(generics.ListCreateAPIView):
 		if serializer.is_valid():
 			serializer.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)    
-		return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
+		return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
