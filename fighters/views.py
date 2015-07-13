@@ -7,7 +7,7 @@ from rest_framework.response import Response
 # models and serialization
 from fighters.models import Fighter, PracticeSession
 from django.contrib.auth.models import User
-from fighters.serializers import FighterSerializer, PracticeSessionSerializer, UserSerializer, RegisterUserSerializer
+from fighters.serializers import FighterSerializer, PracticeSessionSerializer, UserSerializer, ViewFighterSerializer, RegisterUserSerializer
 from django.db.models.base import ObjectDoesNotExist 
 
 #authentication
@@ -53,37 +53,46 @@ class FighterList(generics.ListCreateAPIView):
 	queryset = Fighter.objects.all()
 	serializer_class = FighterSerializer
 
+	def get_serializer_class(self):
+		if self.request.method == 'POST':
+			return FighterSerializer
+		return ViewFighterSerializer
 
 class FighterDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = (permissions.IsAuthenticated, IsTrainerOrOwner,)
 	queryset = Fighter.objects.all()
 	serializer_class = FighterSerializer
 
+	def get_serializer_class(self):
+		if self.request.method == 'PUT':
+			return FighterSerializer
+		return ViewFighterSerializer
+
 class UserList(generics.ListCreateAPIView):
 	permission_classes = (permissions.IsAuthenticated, IsTrainer,)
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
 
-	def post(self, request):
-		serializer = RegisterUserSerializer(data=request.data)
-		if serializer.is_valid():
-			serializer.save()
-			return Response(serializer.data, status=status.HTTP_201_CREATED)    
-		return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
-
+	def get_serializer_class(self):
+		if self.request.method == 'POST':
+			return RegisterUserSerializer
+		return UserSerializer
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = (permissions.IsAuthenticated, IsTrainerOrOwner,)
 	queryset = User.objects.all()
-	serializer_class = UserSerializer
+	serializer_class = RegisterUserSerializer
+
+	def get_serializer_class(self):
+		if self.request.method == 'PUT':
+			return RegisterUserSerializer
+		return UserSerializer
 
 class SessionList(generics.ListCreateAPIView):
 	permission_classes = (permissions.IsAuthenticated, IsTrainer,)	
 	serializer_class = PracticeSessionSerializer
 
-	def get_queryset(self):		
-		
-		
+	def get_queryset(self):
 		#session_type = self.request.query_params.get('type', None)
 		queryset = PracticeSession.objects.all()
 		#if session_type is None:

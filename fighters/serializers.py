@@ -30,13 +30,17 @@ class UserSerializer(serializers.ModelSerializer):
 		model = User
 		fields = ('id', 'username', 'email',)
 
-class FighterSerializer(serializers.ModelSerializer):
-	userinfo = UserSerializer(required=False, allow_null=True, read_only=True)
+class FighterSerializer(serializers.ModelSerializer):	
 	user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), allow_null=True, required = False)	
 	class Meta:
 		model = Fighter
 		#fields = ( 'id', 'name', 'user', 'is_trainer', 'is_admin','is_fighter','is_archer','is_newbie', 'can_post_notifications', )
 
+class ViewFighterSerializer(serializers.ModelSerializer):	
+	user = UserSerializer()
+	class Meta:
+		model = Fighter
+		#fields = ( 'id', 'name', 'user', 'is_trainer', 'is_admin','is_fighter','is_archer','is_newbie', 'can_post_notifications', )
 
 class PracticeSessionSerializer(serializers.ModelSerializer):
 	half_attendance = serializers.PrimaryKeyRelatedField(
