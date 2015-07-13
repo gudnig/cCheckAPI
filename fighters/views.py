@@ -93,10 +93,14 @@ class SessionList(generics.ListCreateAPIView):
 	serializer_class = PracticeSessionSerializer
 
 	def get_queryset(self):
-		#session_type = self.request.query_params.get('type', None)
 		queryset = PracticeSession.objects.all()
-		#if session_type is None:
-		#	return Response("Check arguments", status=status.HTTP_400_BAD_REQUEST)	
+		current_type = self.request.query_params.get('type', None)
+		from_date = self.request.query_params.get('from', None)
+		to_date = self.request.query_params.get('to', None)
+		if current_type is not None:			
+			queryset = queryset.filter(session_type=current_type)
+		if from_date is not None and to_date is not None:
+			queryset = queryset.filter(date__range=[from_date, to_date])
 		return queryset
 
 	def post(self, request):
